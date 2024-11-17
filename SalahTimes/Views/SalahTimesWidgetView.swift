@@ -27,53 +27,53 @@ struct MediumWidgetView: View {
     }
     
     var body: some View {
-        HStack(spacing: 20) {
+        HStack(spacing: 12) {
             // Left side with circular progress
-            VStack(spacing: 8) {
+            VStack(spacing: 4) {
                 if let prayer = nextPrayer {
                     Text(prayer.name)
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.system(size: 16, weight: .semibold))
                     
                     Text("Remaining Time")
-                        .font(.system(size: 14))
+                        .font(.system(size: 12))
                         .foregroundColor(.gray)
                     
                     if let time = timeRemaining {
                         Text(String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds))
-                            .font(.system(size: 18, weight: .medium))
+                            .font(.system(size: 14, weight: .medium))
                             .monospacedDigit()
                     }
                     
                     CircularProgressView(progress: progress)
-                        .frame(width: 100, height: 100)
+                        .frame(width: 60, height: 60)
                 }
             }
-            .frame(maxWidth: 140)
+            .frame(maxWidth: 100)
             
             // Right side with prayer times list
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 ForEach(entry.prayerTimes) { prayer in
                     HStack {
                         Text(prayer.name)
-                            .font(.system(size: 16))
+                            .font(.system(size: 12))
                             .foregroundColor(prayer.isNextPrayer ? .primary : .gray)
-                            .frame(width: 70, alignment: .leading)
+                            .frame(width: 50, alignment: .leading)
                         
                         Text(formatTime(prayer.time))
-                            .font(.system(size: 16))
+                            .font(.system(size: 12))
                             .foregroundColor(prayer.isNextPrayer ? .primary : .gray)
                     }
-                    .padding(.vertical, 2)
+                    .padding(.vertical, 1)
                     .background(
-                        RoundedRectangle(cornerRadius: 8)
+                        RoundedRectangle(cornerRadius: 4)
                             .fill(prayer.isNextPrayer ? Color.green.opacity(0.2) : Color.clear)
-                            .padding(.horizontal, -8)
+                            .padding(.horizontal, -4)
                     )
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding()
+        .padding(8)
     }
     
     private func formatTime(_ date: Date) -> String {
