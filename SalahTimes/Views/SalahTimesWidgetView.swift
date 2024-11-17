@@ -25,7 +25,7 @@ struct MediumWidgetView: View {
     }
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 16) {
             // Left side with circular progress
             if let prayer = nextPrayer, let time = timeRemaining {
                 CircularProgressView(
@@ -33,7 +33,7 @@ struct MediumWidgetView: View {
                     nextPrayer: prayer.name,
                     remainingTime: String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds)
                 )
-                .frame(width: 100, height: 100)
+                .frame(width: 105, height: 105)
             }
             
             // Right side with prayer times list
@@ -41,12 +41,12 @@ struct MediumWidgetView: View {
                 ForEach(entry.prayerTimes) { prayer in
                     HStack {
                         Text(prayer.name)
-                            .font(.system(size: 12))
+                            .font(.system(size: 15))
                             .foregroundColor(prayer.isNextPrayer ? .primary : .gray)
-                            .frame(width: 50, alignment: .leading)
+                            .frame(width: 60, alignment: .leading)
                         
                         Text(formatTime(prayer.time))
-                            .font(.system(size: 12))
+                            .font(.system(size: 15))
                             .foregroundColor(prayer.isNextPrayer ? .primary : .gray)
                     }
                     .padding(.vertical, 1)
@@ -57,7 +57,8 @@ struct MediumWidgetView: View {
                     )
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .trailing)
+            .padding(.trailing, 8)
         }
         .padding(8)
     }
