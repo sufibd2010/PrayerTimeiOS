@@ -38,17 +38,16 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: Configuration, in context: Context) async -> Timeline<Entry> {
         var entries: [Entry] = []
         let currentDate = Date()
-        
         let coordinates = await getCoordinates()
         
-        for hourOffset in 0..<24 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: entryDate)
+        // Create entries for next 30 minutes with 1-minute intervals
+        for minuteOffset in 0..<30 {
+            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             
             if let coordinates = coordinates {
                 let params = CalculationMethod.muslimWorldLeague.params
-                let adhanCoordinates = coordinates.toAdhanCoordinates()
-                let prayerTimes = try? PrayerTimes(coordinates: adhanCoordinates, date: dateComponents, calculationParameters: params)
+                let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: entryDate)
+                let prayerTimes = try? PrayerTimes(coordinates: coordinates.toAdhanCoordinates(), date: dateComponents, calculationParameters: params)
                 
                 let prayers = createPrayerTimesList(from: prayerTimes)
                 entries.append(SalahTimesEntry(
@@ -67,7 +66,7 @@ struct Provider: AppIntentTimelineProvider {
             }
         }
         
-        return Timeline(entries: entries, policy: .atEnd)
+        return Timeline(entries: entries, policy: .after(Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!))
     }
     
     private func getCoordinates() async -> Coordinates? {
