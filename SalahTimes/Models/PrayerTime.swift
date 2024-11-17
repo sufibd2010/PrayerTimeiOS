@@ -10,10 +10,12 @@ struct PrayerTime: Identifiable, Hashable {
     var iconName: String {
         switch name {
         case "Fajr": return "sunrise.fill"
+        case "Sunrise": return "sun.min.fill"
         case "Dhuhr": return "sun.max.fill"
         case "Asr": return "sun.min.fill"
         case "Maghrib": return "sunset.fill"
         case "Isha": return "moon.stars.fill"
+        case "Qiyam": return "moon.fill"
         default: return "clock.fill"
         }
     }

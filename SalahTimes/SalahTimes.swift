@@ -49,7 +49,21 @@ class Provider: AppIntentTimelineProvider {
             let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             
             if let coordinates = coordinates {
-                let params = CalculationMethod.muslimWorldLeague.params
+                var params = CalculationMethod.karachi.params
+                params.madhab = .hanafi
+                params.highLatitudeRule = .middleOfTheNight
+                
+                // Create adjustments
+                let adjustments = PrayerAdjustments(
+                    fajr: 0,
+                    sunrise: 0,
+                    dhuhr: 0,
+                    asr: 0,
+                    maghrib: 0,
+                    isha: 0
+                )
+                params.adjustments = adjustments
+                
                 let dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: entryDate)
                 let prayerTimes = try? PrayerTimes(coordinates: coordinates.toAdhanCoordinates(), date: dateComponents, calculationParameters: params)
                 
@@ -80,8 +94,8 @@ class Provider: AppIntentTimelineProvider {
             return Coordinates(latitude: lat, longitude: lng)
         }
         
-        // Fallback to default coordinates (Mecca)
-        return Coordinates(latitude: 21.4225, longitude: 39.8262)
+        // Fallback to default coordinates (Dhaka, Bangladesh)
+        return Coordinates(latitude: 23.777176, longitude: 90.399452)
     }
     
     private func createPrayerTimesList(from prayerTimes: PrayerTimes?) -> [PrayerTime] {
@@ -89,6 +103,7 @@ class Provider: AppIntentTimelineProvider {
         
         let prayers: [(String, Date?)] = [
             ("Fajr", times.fajr),
+            ("Sunrise", times.sunrise),
             ("Dhuhr", times.dhuhr),
             ("Asr", times.asr),
             ("Maghrib", times.maghrib),

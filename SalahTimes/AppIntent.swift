@@ -12,7 +12,7 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource { "Prayer Times Configuration" }
     static var description: IntentDescription { "Configure your prayer times widget." }
 
-    @Parameter(title: "Calculation Method", default: "Muslim World League")
+    @Parameter(title: "Calculation Method", default: "Karachi")
     var calculationMethod: String
     
     @Parameter(title: "Location", default: "Auto")
