@@ -10,12 +10,16 @@ import SwiftUI
 import Adhan
 import CoreLocation
 
-struct Provider: AppIntentTimelineProvider {
+class Provider: AppIntentTimelineProvider {
     typealias Entry = SalahTimesEntry
     typealias Configuration = ConfigurationAppIntent
     
     let locationManager = CLLocationManager()
     let userDefaults = UserDefaults(suiteName: "group.com.yourapp.prayertime")
+    
+    private var locationCache: [Coordinates: String] = [:]
+    private var lastGeocodingRequest: Date?
+    private var lastKnownLocation: String?
     
     func placeholder(in context: Context) -> Entry {
         SalahTimesEntry(
@@ -40,8 +44,8 @@ struct Provider: AppIntentTimelineProvider {
         let currentDate = Date()
         let coordinates = await getCoordinates()
         
-        // Create entries for next 30 minutes with 1-minute intervals
-        for minuteOffset in 0..<30 {
+        // Create entries for next 30 minutes with 5-minute intervals
+        for minuteOffset in stride(from: 0, to: 30, by: 5) {
             let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             
             if let coordinates = coordinates {
@@ -119,18 +123,35 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     private func getLocationName(coordinates: Coordinates) async -> String {
+        // First check if we have a cached name for these coordinates
+        if let cachedName = locationCache[coordinates] {
+            return cachedName
+        }
+        
+        // Check if enough time has passed since last geocoding request
+        let currentTime = Date()
+        if let lastGeocodingTime = lastGeocodingRequest,
+           currentTime.timeIntervalSince(lastGeocodingTime) < 60 { // Wait at least 60 seconds between requests
+            return lastKnownLocation ?? "Unknown Location"
+        }
+        
         let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
         let geocoder = CLGeocoder()
         
         do {
+            lastGeocodingRequest = currentTime
             let placemarks = try await geocoder.reverseGeocodeLocation(location)
             if let placemark = placemarks.first {
-                return placemark.locality ?? "Unknown Location"
+                let locationName = placemark.locality ?? "Unknown Location"
+                // Cache the result
+                locationCache[coordinates] = locationName
+                lastKnownLocation = locationName
+                return locationName
             }
         } catch {
             print("Geocoding error: \(error)")
         }
-        return "Unknown Location"
+        return lastKnownLocation ?? "Unknown Location"
     }
 }
 
