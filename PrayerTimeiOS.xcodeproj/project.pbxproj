@@ -10,6 +10,7 @@
 		80E15BCB2CEA46D000E2C34D /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E15BCA2CEA46D000E2C34D /* WidgetKit.framework */; };
 		80E15BCD2CEA46D000E2C34D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E15BCC2CEA46D000E2C34D /* SwiftUI.framework */; };
 		80E15BDE2CEA46D200E2C34D /* SalahTimesExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 80E15BC82CEA46D000E2C34D /* SalahTimesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		80E15BEE2CEA47B800E2C34D /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = 80E15BED2CEA47B800E2C34D /* Adhan */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80E15BEE2CEA47B800E2C34D /* Adhan in Frameworks */,
 				80E15BCD2CEA46D000E2C34D /* SwiftUI.framework in Frameworks */,
 				80E15BCB2CEA46D000E2C34D /* WidgetKit.framework in Frameworks */,
 			);
@@ -161,6 +163,7 @@
 			);
 			name = SalahTimesExtension;
 			packageProductDependencies = (
+				80E15BED2CEA47B800E2C34D /* Adhan */,
 			);
 			productName = SalahTimesExtension;
 			productReference = 80E15BC82CEA46D000E2C34D /* SalahTimesExtension.appex */;
@@ -193,6 +196,9 @@
 			);
 			mainGroup = 80E15B872CEA442500E2C34D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				80E15BEC2CEA47B800E2C34D /* XCRemoteSwiftPackageReference "Adhan-Swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 80E15B912CEA442500E2C34D /* Products */;
 			projectDirPath = "";
@@ -505,6 +511,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		80E15BEC2CEA47B800E2C34D /* XCRemoteSwiftPackageReference "Adhan-Swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/batoulapps/Adhan-Swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		80E15BED2CEA47B800E2C34D /* Adhan */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80E15BEC2CEA47B800E2C34D /* XCRemoteSwiftPackageReference "Adhan-Swift" */;
+			productName = Adhan;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 80E15B882CEA442500E2C34D /* Project object */;
 }
