@@ -1,7 +1,5 @@
 import SwiftUI
 
-
-
 struct MediumWidgetView: View {
     let entry: SalahTimesEntry
     
@@ -29,26 +27,14 @@ struct MediumWidgetView: View {
     var body: some View {
         HStack(spacing: 12) {
             // Left side with circular progress
-            VStack(spacing: 4) {
-                if let prayer = nextPrayer {
-                    Text(prayer.name)
-                        .font(.system(size: 16, weight: .semibold))
-                    
-                    Text("Remaining Time")
-                        .font(.system(size: 12))
-                        .foregroundColor(.gray)
-                    
-                    if let time = timeRemaining {
-                        Text(String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds))
-                            .font(.system(size: 14, weight: .medium))
-                            .monospacedDigit()
-                    }
-                    
-                    CircularProgressView(progress: progress)
-                        .frame(width: 60, height: 60)
-                }
+            if let prayer = nextPrayer, let time = timeRemaining {
+                CircularProgressView(
+                    progress: progress,
+                    nextPrayer: prayer.name,
+                    remainingTime: String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds)
+                )
+                .frame(width: 100, height: 100)
             }
-            .frame(maxWidth: 100)
             
             // Right side with prayer times list
             VStack(alignment: .leading, spacing: 4) {
@@ -66,7 +52,7 @@ struct MediumWidgetView: View {
                     .padding(.vertical, 1)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(prayer.isNextPrayer ? Color.green.opacity(0.2) : Color.clear)
+                            .fill(prayer.isNextPrayer ? Color(red: 0.2, green: 0.5, blue: 0.4).opacity(0.2) : Color.clear)
                             .padding(.horizontal, -4)
                     )
                 }
@@ -81,7 +67,7 @@ struct MediumWidgetView: View {
         formatter.dateFormat = "hh:mma"
         return formatter.string(from: date).lowercased()
     }
-} 
+}
 
 
 struct SmallWidgetView: View {
@@ -109,27 +95,38 @@ struct SmallWidgetView: View {
     }
     
     var body: some View {
-        VStack(spacing: 5) {
-            Text("Remaining Time")
-                .font(.system(size: 14))
-                .foregroundColor(.gray)
-                .padding(.top, 8)
+        ZStack {
+            Color(UIColor.systemBackground)
+                .opacity(0.95)
             
-            if let time = timeRemaining {
-                Text(String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds))
-                    .font(.system(size: 18, weight: .medium))
-                    .monospacedDigit()
+            VStack(spacing: 8) {
+                if let prayer = nextPrayer, let time = timeRemaining {
+                    Text(prayer.name)
+                        .font(.system(size: 28, weight: .bold))
+                        .padding(.top, 20)
+                    
+                    Text("Remaining Time")
+                        .font(.system(size: 16))
+                        .foregroundColor(.gray)
+                        .padding(.top, 4)
+                    
+                    Text(String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds))
+                        .font(.system(size: 32, weight: .medium))
+                        .monospacedDigit()
+                        .padding(.top, 2)
+                    
+                    CircularProgressView(
+                        progress: progress,
+                        nextPrayer: prayer.name,
+                        remainingTime: String(format: "%02d:%02d:%02d", time.hours, time.minutes, time.seconds)
+                    )
+                    .frame(width: 200, height: 200)
+                    .padding(.top, 10)
+                }
+                
+                Spacer()
             }
-            
-            Spacer()
-            
-            ZStack {
-                CircularProgressView(progress: progress)
-                    .frame(width: 100, height: 100)
-            }
-            
-            Spacer()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .padding(10)
     }
-} 
+}
