@@ -42,25 +42,53 @@ class Provider: AppIntentTimelineProvider {
     func timeline(for configuration: Configuration, in context: Context) async -> Timeline<Entry> {
         var entries: [Entry] = []
         let currentDate = Date()
-        let coordinates = await getCoordinates()
+        let coordinates = await getCoordinates(location: configuration.location)
         
         // Create entries for next 30 minutes with 5-minute intervals
         for minuteOffset in stride(from: 0, to: 30, by: 5) {
             let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
             
             if let coordinates = coordinates {
-                var params = CalculationMethod.karachi.params
-                params.madhab = .hanafi
-                params.highLatitudeRule = .middleOfTheNight
+                // Set calculation method based on configuration
+                var params: CalculationParameters
+                switch configuration.calculationMethod {
+                    case .muslimWorldLeague:
+                        params = CalculationMethod.muslimWorldLeague.params
+                    case .egyptian:
+                        params = CalculationMethod.egyptian.params
+                    case .northAmerica:
+                        params = CalculationMethod.northAmerica.params
+                    case .kuwait:
+                        params = CalculationMethod.kuwait.params
+                    case .qatar:
+                        params = CalculationMethod.qatar.params
+                    case .singapore:
+                        params = CalculationMethod.singapore.params
+                    case .karachi:
+                        params = CalculationMethod.karachi.params
+                }
                 
-                // Create adjustments
+                // Set madhab
+                params.madhab = configuration.madhab == .hanafi ? .hanafi : .shafi
+                
+                // Set high latitude rule
+                switch configuration.highLatitudeRule {
+                    case .seventhOfTheNight:
+                        params.highLatitudeRule = .seventhOfTheNight
+                    case .twilightAngle:
+                        params.highLatitudeRule = .twilightAngle
+                    case .middleOfTheNight:
+                        params.highLatitudeRule = .middleOfTheNight
+                }
+                
+                // Set prayer time adjustments
                 let adjustments = PrayerAdjustments(
-                    fajr: 0,
-                    sunrise: 0,
-                    dhuhr: 0,
-                    asr: 0,
-                    maghrib: 0,
-                    isha: 0
+                    fajr: configuration.fajrAdjustment,
+                    sunrise: configuration.sunriseAdjustment,
+                    dhuhr: configuration.dhuhrAdjustment,
+                    asr: configuration.asrAdjustment,
+                    maghrib: configuration.maghribAdjustment,
+                    isha: configuration.ishaAdjustment
                 )
                 params.adjustments = adjustments
                 
@@ -87,15 +115,31 @@ class Provider: AppIntentTimelineProvider {
         return Timeline(entries: entries, policy: .after(Calendar.current.date(byAdding: .minute, value: 1, to: currentDate)!))
     }
     
-    private func getCoordinates() async -> Coordinates? {
-        // First try to get saved coordinates from UserDefaults
-        if let lat = userDefaults?.double(forKey: "latitude"),
-           let lng = userDefaults?.double(forKey: "longitude") {
-            return Coordinates(latitude: lat, longitude: lng)
+    private func getCoordinates(location: String) async -> Coordinates? {
+        // If location is set to "Auto", use saved coordinates
+        if location == "Auto" {
+            if let lat = userDefaults?.double(forKey: "latitude"),
+               let lng = userDefaults?.double(forKey: "longitude") {
+                return Coordinates(latitude: lat, longitude: lng)
+            }
+            return Coordinates(latitude: 23.777176, longitude: 90.399452) // Default to Dhaka
         }
         
-        // Fallback to default coordinates (Dhaka, Bangladesh)
-        return Coordinates(latitude: 23.777176, longitude: 90.399452)
+        // Otherwise, geocode the location string
+        let geocoder = CLGeocoder()
+        do {
+            let placemarks = try await geocoder.geocodeAddressString(location)
+            if let location = placemarks.first?.location {
+                return Coordinates(
+                    latitude: location.coordinate.latitude,
+                    longitude: location.coordinate.longitude
+                )
+            }
+        } catch {
+            print("Geocoding error: \(error)")
+        }
+        
+        return nil
     }
     
     private func createPrayerTimesList(from prayerTimes: PrayerTimes?) -> [PrayerTime] {
