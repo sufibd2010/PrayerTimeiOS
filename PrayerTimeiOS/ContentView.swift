@@ -13,9 +13,17 @@ import CoreLocation
 struct ContentView: View {
    
     @StateObject private var locationManager = LocationManager()
-    @AppStorage("calculationMethod") private var calculationMethod = "Karachi"
-    @AppStorage("madhab") private var madhab = "Hanafi"
-    @AppStorage("highLatitudeRule") private var highLatitudeRule = "Middle of the Night"
+    
+    private let defaults = UserDefaults(suiteName: UserDefaultsKeys.suiteName)!
+    
+    @AppStorage(UserDefaultsKeys.calculationMethod, store: UserDefaults(suiteName: UserDefaultsKeys.suiteName))
+    private var calculationMethod = "Karachi"
+    
+    @AppStorage(UserDefaultsKeys.madhab, store: UserDefaults(suiteName: UserDefaultsKeys.suiteName))
+    private var madhab = "Hanafi"
+    
+    @AppStorage(UserDefaultsKeys.highLatitudeRule, store: UserDefaults(suiteName: UserDefaultsKeys.suiteName))
+    private var highLatitudeRule = "Middle of the Night"
     
     let calculationMethods = ["Karachi", "Muslim World League", "Egyptian", "North America", "Kuwait", "Qatar", "Singapore"]
     let madhabs = ["Hanafi", "Shafi"]
@@ -68,7 +76,8 @@ struct AdjustmentRow: View {
     
     init(prayerName: String, adjustment: Int) {
         self.prayerName = prayerName
-        self._adjustment = AppStorage(wrappedValue: adjustment, "\(prayerName.lowercased())Adjustment")
+        let key = "\(prayerName.lowercased())Adjustment"
+        self._adjustment = AppStorage(wrappedValue: adjustment, key, store: UserDefaults(suiteName: UserDefaultsKeys.suiteName))
     }
     
     var body: some View {

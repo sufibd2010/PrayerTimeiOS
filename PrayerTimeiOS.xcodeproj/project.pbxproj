@@ -11,6 +11,8 @@
 		80E15BCD2CEA46D000E2C34D /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80E15BCC2CEA46D000E2C34D /* SwiftUI.framework */; };
 		80E15BDE2CEA46D200E2C34D /* SalahTimesExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 80E15BC82CEA46D000E2C34D /* SalahTimesExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		80E15BEE2CEA47B800E2C34D /* Adhan in Frameworks */ = {isa = PBXBuildFile; productRef = 80E15BED2CEA47B800E2C34D /* Adhan */; };
+		80EACE742CEBC30800F0FD52 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EACE722CEBC30800F0FD52 /* UserDefaultsKeys.swift */; };
+		80EACE752CEBC30800F0FD52 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EACE722CEBC30800F0FD52 /* UserDefaultsKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,8 @@
 		80E15BC82CEA46D000E2C34D /* SalahTimesExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SalahTimesExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		80E15BCA2CEA46D000E2C34D /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		80E15BCC2CEA46D000E2C34D /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		80EACE712CEBC26200F0FD52 /* SalahTimesExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SalahTimesExtension.entitlements; sourceTree = "<group>"; };
+		80EACE722CEBC30800F0FD52 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -98,6 +102,8 @@
 				80E15BCE2CEA46D000E2C34D /* SalahTimes */,
 				80E15BC92CEA46D000E2C34D /* Frameworks */,
 				80E15B912CEA442500E2C34D /* Products */,
+				80EACE732CEBC30800F0FD52 /* Shared */,
+				80EACE712CEBC26200F0FD52 /* SalahTimesExtension.entitlements */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,6 +123,14 @@
 				80E15BCC2CEA46D000E2C34D /* SwiftUI.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80EACE732CEBC30800F0FD52 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				80EACE722CEBC30800F0FD52 /* UserDefaultsKeys.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80EACE752CEBC30800F0FD52 /* UserDefaultsKeys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +254,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80EACE742CEBC30800F0FD52 /* UserDefaultsKeys.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,9 +393,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PrayerTimeiOS/PrayerTimeiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrayerTimeiOS/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -405,9 +423,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PrayerTimeiOS/PrayerTimeiOS.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PrayerTimeiOS/Preview Content\"";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -433,8 +453,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SalahTimesExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SalahTimes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SalahTimes;
@@ -459,8 +481,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = SalahTimesExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SalahTimes/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SalahTimes;
